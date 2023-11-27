@@ -18,7 +18,7 @@ export default function Signin() {
           name: user.displayName,
           email: user.email,
           username: user.displayName.split(" ").join("").toLocaleLowerCase(),
-          userImg: user.photoURL,
+          userImg: user.photoURL, 
           uid: user.uid,
           timestamp: serverTimestamp(),
         });

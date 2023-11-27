@@ -18,19 +18,19 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
-import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { deleteObject, ref } from "firebase/storage";
 import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atom/modalAtom";
 import { useRouter } from "next/router";
+import { userState } from "../atom/userAtom";
 
 export default function Comment({ comment, commentId, originalPostId }) {
-  const { data: session } = useSession();
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
   const [open, setOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
+  const [currentUser] = useRecoilState(userState);
   const router = useRouter();
 
   useEffect(() => {
@@ -41,13 +41,11 @@ export default function Comment({ comment, commentId, originalPostId }) {
   }, [db, originalPostId, commentId]);
 
   useEffect(() => {
-    setHasLiked(
-      likes.findIndex((like) => like.id === session?.user.uid) !== -1
-    );
-  }, [likes]);
+    setHasLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
+  }, [likes, currentUser]);
 
   async function likeComment() {
-    if (session) {
+    if (currentUser) {
       if (hasLiked) {
         await deleteDoc(
           doc(
@@ -57,7 +55,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
             "comments",
             commentId,
             "likes",
-            session?.user.uid
+            currentUser?.uid
           )
         );
       } else {
@@ -69,15 +67,16 @@ export default function Comment({ comment, commentId, originalPostId }) {
             "comments",
             commentId,
             "likes",
-            session?.user.uid
+            currentUser?.uid
           ),
           {
-            username: session.user.username,
+            username: currentUser?.username,
           }
         );
       }
     } else {
-      signIn();
+      // signIn();
+      router.push("/auth/signin");
     }
   }
 
@@ -86,7 +85,6 @@ export default function Comment({ comment, commentId, originalPostId }) {
       deleteDoc(doc(db, "posts", originalPostId, "comments", commentId));
     }
   }
-
   return (
     <div className="flex p-3 cursor-pointer border-b border-gray-200 pl-20">
       {/* user image */}
@@ -98,7 +96,6 @@ export default function Comment({ comment, commentId, originalPostId }) {
       {/* right side */}
       <div className="flex-1">
         {/* Header */}
-
         <div className="flex items-center justify-between">
           {/* post user info */}
           <div className="flex items-center space-x-1 whitespace-nowrap">
@@ -112,25 +109,21 @@ export default function Comment({ comment, commentId, originalPostId }) {
               <Moment fromNow>{comment?.timestamp?.toDate()}</Moment>
             </span>
           </div>
-
           {/* dot icon */}
           <DotsHorizontalIcon className="h-10 hoverEffect w-10 hover:bg-sky-100 hover:text-sky-500 p-2 " />
         </div>
-
         {/* post text */}
-
         <p className="text-gray-800 text-[15px sm:text-[16px] mb-2">
           {comment?.comment}
         </p>
-
         {/* icons */}
-
         <div className="flex justify-between text-gray-500 p-2">
           <div className="flex items-center select-none">
             <ChatIcon
               onClick={() => {
-                if (!session) {
-                  signIn();
+                if (!currentUser) {
+                  // signIn();
+                  router.push("/auth/signin");
                 } else {
                   setPostId(originalPostId);
                   setOpen(!open);
@@ -139,7 +132,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
               className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
             />
           </div>
-          {session?.user.uid === comment?.userId && (
+          {currentUser?.uid === comment?.userId && (
             <TrashIcon
               onClick={deleteComment}
               className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
@@ -166,7 +159,6 @@ export default function Comment({ comment, commentId, originalPostId }) {
               </span>
             )}
           </div>
-
           <ShareIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
           <ChartBarIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
         </div>

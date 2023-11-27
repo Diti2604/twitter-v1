@@ -41,6 +41,7 @@ export default function Input() {
     });
 
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
     if (selectedFile) {
       await uploadString(imageRef, selectedFile, "data_url").then(async () => {
         const downloadURL = await getDownloadURL(imageRef);
@@ -49,15 +50,18 @@ export default function Input() {
         });
       });
     }
+
     setInput("");
     setSelectedFile(null);
     setLoading(false);
   };
+
   const addImageToPost = (e) => {
     const reader = new FileReader();
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
+
     reader.onload = (readerEvent) => {
       setSelectedFile(readerEvent.target.result);
     };

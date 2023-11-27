@@ -33,6 +33,7 @@ export default function CommentModal() {
       setPost(snapshot);
     });
   }, [postId, db]);
+
   async function sendComment() {
     await addDoc(collection(db, "posts", postId, "comments"), {
       comment: input,
@@ -47,6 +48,7 @@ export default function CommentModal() {
     setInput("");
     router.push(`/posts/${postId}`);
   }
+
   return (
     <div>
       {open && (
@@ -101,6 +103,7 @@ export default function CommentModal() {
                     onChange={(e) => setInput(e.target.value)}
                   ></textarea>
                 </div>
+
                 <div className="flex items-center justify-between pt-2.5">
                   <div className="flex">
                     <div

@@ -3,7 +3,7 @@ import { db } from "../../firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
-export default function signin() {
+export default function Signin() {
   const router = useRouter();
   const onGoogleClick = async () => {
     try {

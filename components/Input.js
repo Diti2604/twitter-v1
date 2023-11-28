@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/outline";
 import { useSession, signOut } from "next-auth/react";
 import { useRef, useState } from "react";
-import { db, storage } from "../firebase";
+import { db, storage } from "../../firebase";
 import {
   addDoc,
   collection,

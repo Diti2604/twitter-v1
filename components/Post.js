@@ -17,7 +17,7 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import { db, storage } from "../firebase";
+import { db, storage } from "../../firebase";
 import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { deleteObject, ref } from "firebase/storage";

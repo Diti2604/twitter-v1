@@ -10,7 +10,7 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import {
   addDoc,
   collection,

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState } from "recoil";
+import { modalState, postIdState } from "../atom/modalAtom";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import {
@@ -9,6 +10,7 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
+import { db } from "../firebase";
 import {
   addDoc,
   collection,
@@ -18,8 +20,6 @@ import {
 } from "firebase/firestore";
 import Moment from "react-moment";
 import { useSession } from "next-auth/react";
-import { modalState, postIdState } from "../atom/modalAtom";
-import { db } from "../firebase";
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId] = useRecoilState(postIdState);
@@ -27,11 +27,13 @@ export default function CommentModal() {
   const [input, setInput] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
+
   useEffect(() => {
     onSnapshot(doc(db, "posts", postId), (snapshot) => {
       setPost(snapshot);
     });
   }, [postId, db]);
+
   async function sendComment() {
     await addDoc(collection(db, "posts", postId, "comments"), {
       comment: input,
@@ -46,6 +48,7 @@ export default function CommentModal() {
     setInput("");
     router.push(`/posts/${postId}`);
   }
+
   return (
     <div>
       {open && (
@@ -83,6 +86,7 @@ export default function CommentModal() {
             <p className="text-gray-500 text-[15px] sm:text-[16px] ml-16 mb-2">
               {post?.data()?.text}
             </p>
+
             <div className="flex  p-3 space-x-3">
               <img
                 src={session.user.image}
@@ -99,6 +103,7 @@ export default function CommentModal() {
                     onChange={(e) => setInput(e.target.value)}
                   ></textarea>
                 </div>
+
                 <div className="flex items-center justify-between pt-2.5">
                   <div className="flex">
                     <div

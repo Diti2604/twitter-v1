@@ -1,6 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { db } from "../../firebase";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithRedirect,
+} from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 export default function Signin() {
@@ -9,7 +14,7 @@ export default function Signin() {
     try {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
+      await signInWithPopup(auth, provider);
       const user = auth.currentUser.providerData[0];
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
@@ -18,14 +23,16 @@ export default function Signin() {
           name: user.displayName,
           email: user.email,
           username: user.displayName.split(" ").join("").toLocaleLowerCase(),
-          userImg: user.photoURL, 
+          userImg: user.photoURL,
           uid: user.uid,
           timestamp: serverTimestamp(),
         });
       }
+      console.log("Before redirect");
       router.push("/");
+      console.log("After redirect");
     } catch (error) {
-      console.log(error);
+      console.error("Error during sign-in:", error);
     }
   };
   return (

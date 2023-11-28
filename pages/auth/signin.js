@@ -1,17 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 import { db } from "../../firebase";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithRedirect,
+} from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 export default function Signin({ providers }) {
   const router = useRouter();
-//done 
+  //done
   const handleSignIn = async (providerId) => {
     try {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
+      await signInWithPopup(auth, provider);
       const user = auth.currentUser.providerData[0];
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
@@ -20,18 +25,16 @@ export default function Signin({ providers }) {
           name: user.displayName,
           email: user.email,
           username: user.displayName.split(" ").join("").toLocaleLowerCase(),
-          userImg: user.photoURL, 
+          userImg: user.photoURL,
           uid: user.uid,
           timestamp: serverTimestamp(),
         });
       }
-
-      await signIn(providerId, { callbackUrl: "/" });
       router.push("/");
     } catch (error) {
-      console.error("Error during sign-in:", error);
-      // Optionally, you can display an error message to the user
-    }}
+      console.log(error);
+    }
+  };
   return (
     <div className="flex justify-center mt-20 space-x-4">
       <img

@@ -17,13 +17,13 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import { db, storage } from "../../firebase";
 import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { deleteObject, ref } from "firebase/storage";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { modalState, postIdState } from "../atom/modalAtom";
+import { db, storage } from "../firebase";
 export default function Post({ post, id }) {
   const { data: session } = useSession();
   const [likes, setLikes] = useState([]);

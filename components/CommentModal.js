@@ -9,7 +9,6 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
-import { db } from "../../firebase";
 import {
   addDoc,
   collection,
@@ -20,6 +19,7 @@ import {
 import Moment from "react-moment";
 import { useSession } from "next-auth/react";
 import { modalState, postIdState } from "../atom/modalAtom";
+import { db } from "../firebase";
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId] = useRecoilState(postIdState);

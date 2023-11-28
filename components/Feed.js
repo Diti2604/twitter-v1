@@ -3,8 +3,8 @@ import Input from "./Input";
 import Post from "./Post";
 import { useState, useEffect } from "react";
 import { onSnapshot, query, collection, orderBy } from "firebase/firestore";
-import { db } from "../../firebase";
 import { motion, AnimatePresence } from "framer-motion";
+import { db } from "../firebase";
 
 export default function Feed() {
   const [posts, setPosts] = useState([]);

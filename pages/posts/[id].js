@@ -23,8 +23,8 @@ import { useState, useEffect } from "react";
 import { deleteObject, ref } from "firebase/storage";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
-import { db } from "../../firebase";
 import { modalState, postIdState } from "../../atom/modalAtom";
+import { db } from "../../firebase";
 
 export default function Comment({ comment, commentId, originalPostId }) {
   const { data: session } = useSession();

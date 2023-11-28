@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     domains: ["help.twitter.com","upload.wikimedia.org"],
   },
+  experimental: {
+    forceSwcTransforms: true,
+  },
 };
 
 module.exports = nextConfig;

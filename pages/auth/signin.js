@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { db } from "../../firebase";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 export default function Signin() {
@@ -9,7 +9,7 @@ export default function Signin() {
     try {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      await signInWithRedirect(auth, provider);
       const user = auth.currentUser.providerData[0];
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);

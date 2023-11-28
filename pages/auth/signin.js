@@ -6,9 +6,13 @@ export default function Signin({ providers }) {
   const router = useRouter();
 //done 
   const handleSignIn = async (providerId) => {
-    await signIn(providerId, { callbackUrl: "/" });
-    router.push("/"); // Redirect to the home page after signing in
-  };
+    try {
+      await signIn(providerId, { callbackUrl: "/" });
+      router.push("/");
+    } catch (error) {
+      console.error("Error during sign-in:", error);
+      // Optionally, you can display an error message to the user
+    }}
   return (
     <div className="flex justify-center mt-20 space-x-4">
       <img

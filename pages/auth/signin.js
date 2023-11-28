@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 export default function Signin({ providers }) {
   const router = useRouter();
-
+//done 
   const handleSignIn = async (providerId) => {
     await signIn(providerId, { callbackUrl: "/" });
     router.push("/"); // Redirect to the home page after signing in

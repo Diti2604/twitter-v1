@@ -1,7 +1,42 @@
 /* eslint-disable @next/next/no-img-element */
+import { db } from "../../firebase";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithRedirect,
+} from "firebase/auth";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { getProviders, signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+//montihfdnv
 
-export default function Siginin({ providers }) {
+export default function Signin({ providers }) {
+  const router = useRouter();
+  //done
+  const handleSignIn = async (providerId) => {
+    try {
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      const user = auth.currentUser.providerData[0];
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+          name: user.displayName,
+          email: user.email,
+          username: user.displayName.split(" ").join("").toLocaleLowerCase(),
+          userImg: user.photoURL,
+          uid: user.uid,
+          timestamp: serverTimestamp(),
+        });
+      }
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="flex justify-center mt-20 space-x-4">
       <img
@@ -31,7 +66,7 @@ export default function Siginin({ providers }) {
       </div>
     </div>
   );
-}
+};
 
 export async function getServerSideProps() {
   const providers = await getProviders();

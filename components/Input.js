@@ -5,7 +5,6 @@ import {
 } from "@heroicons/react/outline";
 import { useSession, signOut } from "next-auth/react";
 import { useRef, useState } from "react";
-import { db, storage } from "../../firebase";
 import {
   addDoc,
   collection,
@@ -14,6 +13,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { db, storage } from "../firebase";
 
 /* eslint-disable @next/next/no-img-element */
 export default function Input() {

@@ -45,7 +45,7 @@ export default function Signin({ providers }) {
       />
       <div className="">
         {Object.values(providers).map((provider) => (
-          <div className="flex flex-col items-center" key={provider.id}>
+          <div className="flex flex-col items-center" key={provider.name}>
             <img
               className="w-36 object-cover"
               src="https://help.twitter.com/content/dam/help-twitter/brand/logo.png"
@@ -55,7 +55,7 @@ export default function Signin({ providers }) {
               This app is created for learning purposes
             </p>
             <button
-              onClick={() => signIn(provider.id, { callbackUrl: "/" })}
+              onClick={() => handleSignIn(provider.id, { callbackUrl: "/" })}
               className="bg-red-400 rounded-lg p-3 text-white hover:bg-red-500"
             >
               Sign in with {provider.name}

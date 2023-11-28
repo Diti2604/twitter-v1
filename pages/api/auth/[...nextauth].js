@@ -14,6 +14,7 @@ export const authOptions = {
     signIn: "/auth/signin",
   },
   secret: process.env.SECRET,
+  vercel: process.env.NEXT_PUBLIC_VERCEL_URL,
   callbacks: {
     async session({ session, token}) {
       session.user.username = session.user.name

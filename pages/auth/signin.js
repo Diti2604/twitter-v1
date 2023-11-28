@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { getProviders, signIn } from "next-auth/react";
 
-export default function Signin({ providers }) {
+export default function siginin({ providers }) {
   return (
     <div className="flex justify-center mt-20 space-x-4">
       <img

@@ -22,8 +22,8 @@ import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { deleteObject, ref } from "firebase/storage";
 import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "../atom/modalAtom";
 import { useRouter } from "next/router";
+import { modalState, postIdState } from "../atom/modalAtom";
 export default function Post({ post, id }) {
   const { data: session } = useSession();
   const [likes, setLikes] = useState([]);

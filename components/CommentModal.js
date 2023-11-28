@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "../atom/modalAtom";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import {
@@ -20,6 +19,7 @@ import {
 } from "firebase/firestore";
 import Moment from "react-moment";
 import { useSession } from "next-auth/react";
+import { modalState, postIdState } from "../atom/modalAtom";
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId] = useRecoilState(postIdState);

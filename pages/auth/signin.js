@@ -1,7 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { getProviders, signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
-export default function signin({ providers }) {
+export default function Signin({ providers }) {
+  const router = useRouter();
+
+  const handleSignIn = async (providerId) => {
+    await signIn(providerId, { callbackUrl: "/" });
+    router.push("/"); // Redirect to the home page after signing in
+  };
   return (
     <div className="flex justify-center mt-20 space-x-4">
       <img
@@ -21,7 +28,7 @@ export default function signin({ providers }) {
               This app is created for learning purposes
             </p>
             <button
-              onClick={() => signIn(provider.id, { callbackUrl: "/" })}
+              onClick={() => handleSignIn(provider.id)}
               className="bg-red-400 rounded-lg p-3 text-white hover:bg-red-500"
             >
               Sign in with {provider.name}

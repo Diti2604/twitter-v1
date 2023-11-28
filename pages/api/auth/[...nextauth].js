@@ -13,7 +13,7 @@ export const authOptions = {
   pages: {
     signIn: "/auth/signin",
   },
-  secret: process.env.SECRET,
+  secret: process.env.SECRETONE,
   callbacks: {
     async session({ session, token}) {
       session.user.username = session.user.name

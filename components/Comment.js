@@ -18,19 +18,19 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
+import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { deleteObject, ref } from "firebase/storage";
 import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atom/modalAtom";
 import { useRouter } from "next/router";
-import { userState } from "../atom/userAtom";
 
 export default function Comment({ comment, commentId, originalPostId }) {
+  const { data: session } = useSession();
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
   const [open, setOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
-  const [currentUser] = useRecoilState(userState);
   const router = useRouter();
 
   useEffect(() => {
@@ -41,11 +41,13 @@ export default function Comment({ comment, commentId, originalPostId }) {
   }, [db, originalPostId, commentId]);
 
   useEffect(() => {
-    setHasLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
-  }, [likes, currentUser]);
+    setHasLiked(
+      likes.findIndex((like) => like.id === session?.user.uid) !== -1
+    );
+  }, [likes]);
 
   async function likeComment() {
-    if (currentUser) {
+    if (session) {
       if (hasLiked) {
         await deleteDoc(
           doc(
@@ -55,7 +57,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
             "comments",
             commentId,
             "likes",
-            currentUser?.uid
+            session?.user.uid
           )
         );
       } else {
@@ -67,16 +69,15 @@ export default function Comment({ comment, commentId, originalPostId }) {
             "comments",
             commentId,
             "likes",
-            currentUser?.uid
+            session?.user.uid
           ),
           {
-            username: currentUser?.username,
+            username: session.user.username,
           }
         );
       }
     } else {
-      // signIn();
-      router.push("/auth/signin");
+      signIn();
     }
   }
 
@@ -128,9 +129,8 @@ export default function Comment({ comment, commentId, originalPostId }) {
           <div className="flex items-center select-none">
             <ChatIcon
               onClick={() => {
-                if (!currentUser) {
-                  // signIn();
-                  router.push("/auth/signin");
+                if (!session) {
+                  signIn();
                 } else {
                   setPostId(originalPostId);
                   setOpen(!open);
@@ -139,7 +139,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
               className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
             />
           </div>
-          {currentUser?.uid === comment?.userId && (
+          {session?.user.uid === comment?.userId && (
             <TrashIcon
               onClick={deleteComment}
               className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"

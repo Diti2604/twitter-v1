@@ -24,8 +24,8 @@ export default function Home({ newsResults, randomUsersResults }) {
         {/* Widgets */}
 
         <Widgets
-          newsResults={newsResults?.articles}
-          randomUsersResults={randomUsersResults?.results || null}
+          newsResults={newsResults.articles}
+          randomUsersResults={randomUsersResults.results}
         />
 
         {/* Modal */}
@@ -45,21 +45,9 @@ export async function getServerSideProps() {
 
   // Who to follow section
 
-  let randomUsersResults = [];
-
-  try {
-    const res = await fetch(
-      "https://randomuser.me/api/?results=30&inc=name,login,picture"
-    );
-
-    randomUsersResults = await res.json();
-  } catch (e) {
-    randomUsersResults = [];
-  }
-
-  // const randomUsersResults = await fetch(
-  //   "https://randomuser.me/api/?results=30&inc=name,login,picture"
-  // ).then((res) => res.json());
+  const randomUsersResults = await fetch(
+    "https://randomuser.me/api/?results=30&inc=name,login,picture"
+  ).then((res) => res.json());
 
   return {
     props: {

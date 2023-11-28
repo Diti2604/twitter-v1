@@ -5,7 +5,7 @@ export default NextAuth({
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     // ...add more providers here
@@ -16,8 +16,6 @@ export default NextAuth({
   },
 
   secret: process.env.SECRET,
-  vercel: process.env.NEXT_PUBLIC_VERCEL_URL,
-
   callbacks: {
     async session({ session, token }) {
       session.user.username = session.user.name

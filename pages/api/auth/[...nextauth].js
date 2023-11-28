@@ -16,6 +16,7 @@ export default NextAuth({
   },
 
   secret: process.env.SECRET,
+  vercel: process.env.NEXT_PUBLIC_VERCEL_URL,
 
   callbacks: {
     async session({ session, token }) {

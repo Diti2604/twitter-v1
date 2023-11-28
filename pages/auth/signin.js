@@ -31,11 +31,14 @@ export default function Signin({ providers }) {
           timestamp: serverTimestamp(),
         });
       }
-      router.push("/");
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+  
   return (
     <div className="flex justify-center mt-20 space-x-4">
       <img
@@ -55,7 +58,7 @@ export default function Signin({ providers }) {
               This app is created for learning purposes
             </p>
             <button
-              onClick={() => handleSignIn(provider.id, { callbackUrl: "/" })}
+              onClick={handleSignIn}
               className="bg-red-400 rounded-lg p-3 text-white hover:bg-red-500"
             >
               Sign in with {provider.name}
@@ -65,7 +68,7 @@ export default function Signin({ providers }) {
       </div>
     </div>
   );
-};
+}
 
 export async function getServerSideProps() {
   try {

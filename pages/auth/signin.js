@@ -68,10 +68,20 @@ export default function Signin({ providers }) {
 };
 
 export async function getServerSideProps() {
-  const providers = await getProviders();
-  return {
-    props: {
-      providers,
-    },
-  };
+  try {
+    const providers = await getProviders();
+    console.log("Providers:", providers); // Add this line for logging
+    return {
+      props: {
+        providers,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching providers:", error);
+    return {
+      props: {
+        providers: {}, // Set providers to an empty object or handle the error accordingly
+      },
+    };
+  }
 }

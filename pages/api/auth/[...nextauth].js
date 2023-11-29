@@ -10,13 +10,9 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
-  pages: {
-    signIn: "/auth/signin",
-  },
 
-  secret: process.env.NEXT_PUBLIC_SECRET,
   callbacks: {
-    async session({ session, token, user}) {
+    async session({ session, token }) {
       session.user.username = session.user.name
         .split(" ")
         .join("")
@@ -25,6 +21,7 @@ export const authOptions = {
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);

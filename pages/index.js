@@ -11,7 +11,7 @@ export default function Home({ newsResults, randomUsersResults }) {
         <title>Twitter Clone</title>
         <meta
           name="description"
-          http-equiv="Cross-Origin-Opener-Policy"
+          httpEquiv="Cross-Origin-Opener-Policy"
           content="same-origin-allow-popups"
         />
         <link rel="icon" href="/favicon.ico" />

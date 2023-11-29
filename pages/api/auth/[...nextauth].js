@@ -5,15 +5,17 @@ export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
     }),
     // ...add more providers here
   ],
   pages: {
     signIn: "/auth/signin",
+    secret: process.env.NEXT_PUBLIC_NEXTAUTH_URL_SECRET,
   },
-  secret: process.env.SECRET,
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_URL_SECRET,
+  secret: "YOUR_PASSWORD",
   callbacks: {
     async session({ session, token}) {
       session.user.username = session.user.name

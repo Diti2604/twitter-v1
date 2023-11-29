@@ -9,7 +9,7 @@ app.use((req, res, next) => {
 
 // Your other routes and middleware go here
 
-const PORT = process.env.PORT || 3000 ;
+const PORT = process.env.NEXT_PUBLIC_PORT || 3000 ;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

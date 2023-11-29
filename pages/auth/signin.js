@@ -9,6 +9,7 @@ import {
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+//montihfdnv
 
 export default function Signin({ providers }) {
   const router = useRouter();
@@ -31,14 +32,11 @@ export default function Signin({ providers }) {
           timestamp: serverTimestamp(),
         });
       }
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
-  };
-  
+  }
   return (
     <div className="flex justify-center mt-20 space-x-4">
       <img
@@ -48,7 +46,7 @@ export default function Signin({ providers }) {
       />
       <div className="">
         {Object.values(providers).map((provider) => (
-          <div className="flex flex-col items-center" key={provider.name}>
+          <div className="flex flex-col items-center" key={provider.id}>
             <img
               className="w-36 object-cover"
               src="https://help.twitter.com/content/dam/help-twitter/brand/logo.png"
@@ -58,7 +56,7 @@ export default function Signin({ providers }) {
               This app is created for learning purposes
             </p>
             <button
-              onClick={handleSignIn}
+              onClick={() => signIn(provider.id, { callbackUrl: "/" })}
               className="bg-red-400 rounded-lg p-3 text-white hover:bg-red-500"
             >
               Sign in with {provider.name}
@@ -68,23 +66,13 @@ export default function Signin({ providers }) {
       </div>
     </div>
   );
-}
+};
 
 export async function getServerSideProps() {
-  try {
-    const providers = await getProviders();
-    console.log("Providers:", providers); // Add this line for logging
-    return {
-      props: {
-        providers,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching providers:", error);
-    return {
-      props: {
-        providers: {}, // Set providers to an empty object or handle the error accordingly
-      },
-    };
-  }
+  const providers = await getProviders();
+  return {
+    props: {
+      providers,
+    },
+  };
 }
